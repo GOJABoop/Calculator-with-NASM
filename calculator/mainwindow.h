@@ -15,7 +15,89 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void clearDisplayIfZero();
+
+    void  clearDisplay();
+
+    void on_pushButtonPointDecimal_clicked();
+
+    void on_pushButtonNumber1_clicked();
+
+    void on_pushButtonNumber0_clicked();
+
+    void on_pushButtonNumber2_clicked();
+
+    void on_pushButtonNumber3_clicked();
+
+    void on_pushButtonNumber4_clicked();
+
+    void on_pushButtonNumber5_clicked();
+
+    void on_pushButtonNumber6_clicked();
+
+    void on_pushButtonNumber7_clicked();
+
+    void on_pushButtonNumber8_clicked();
+
+    void on_pushButtonNumber9_clicked();
+
+    void on_pushButtonDelete_clicked();
+
+    void on_pushButtonClearBuffer_clicked();
+
+    void on_pushButtonAddition_clicked();
+
+    void on_pushButtonSubtraction_clicked();
+
+    void on_pushButtonMultiplication_clicked();
+
+    void on_pushButtonDivision_clicked();
+
+    void on_pushButtonModule_clicked();
+
+    void on_pushButtonExp_clicked();
+
+    void on_pushButtonGetResult_clicked();
+
+    void addition();
+
+    void subtraction();
+
+    void multiplication();
+
+    void division();
+
+    void module();
+
+    void power();
+
+    void on_pushButtonLn_clicked();
+
+    void on_pushButtonSqrt_clicked();
+
+    void on_pushButtonLog_clicked();
+
+    void on_pushButtonCos_clicked();
+
+    void on_pushButtonSen_clicked();
+
+    void on_pushButtonTan_clicked();
+
+    void on_pushButtonCotan_clicked();
+
+    void on_pushButtonCosh_clicked();
+
+    void on_pushButtonSenh_clicked();
+
+    void on_pushButtonTanh_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QString display;
+    int operation;
+    float operand_A;
+    float operand_B;
+    float result;
 };
 #endif // MAINWINDOW_H
