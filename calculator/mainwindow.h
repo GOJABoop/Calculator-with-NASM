@@ -20,6 +20,10 @@ private slots:
 
     void  clearDisplay();
 
+    void setResultAtDisplay();
+
+    void checkOutputConversion();
+
     void on_pushButtonPointDecimal_clicked();
 
     void on_pushButtonNumber1_clicked();
@@ -56,23 +60,19 @@ private slots:
 
     void on_pushButtonModule_clicked();
 
-    void on_pushButtonExp_clicked();
-
     void on_pushButtonGetResult_clicked();
 
-    void addition();
+    void add();
 
-    void subtraction();
+    void sub();
 
-    void multiplication();
+    void mul();
 
-    void division();
+    void div();
 
     void module();
 
-    void power();
-
-    void on_pushButtonLn_clicked();
+    void on_pushButtonExp_clicked();
 
     void on_pushButtonSqrt_clicked();
 
@@ -84,20 +84,22 @@ private slots:
 
     void on_pushButtonTan_clicked();
 
-    void on_pushButtonCotan_clicked();
+    void on_pushButtonAntiLog_clicked();
 
-    void on_pushButtonCosh_clicked();
+    void on_pushButtonArcCos_clicked();
 
-    void on_pushButtonSenh_clicked();
+    void on_pushButtonArcSen_clicked();
 
-    void on_pushButtonTanh_clicked();
+    void on_pushButtonArctan_clicked();
+
+    void on_pushButtonChangeSign_clicked();
 
 private:
     Ui::MainWindow *ui;
     QString display;
     int operation;
-    float operand_A;
-    float operand_B;
-    float result;
+    double operand_A;
+    double operand_B;
+    double result;
 };
 #endif // MAINWINDOW_H

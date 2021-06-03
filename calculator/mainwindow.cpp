@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "functions.h"
 #include <cmath>
 
 #define NIL 0
+#define ONE 1
+#define NEGATIVE_ONE -1
 #define POINT '.'
 
-enum BASIC_OPERATIONS {ADDITION,SUBTRACTION,MULTIPLICATION,DIVISION,MODULE,POW};
+enum BASIC_OPERATIONS {ADDITION=1,SUBTRACTION,MULTIPLICATION,DIVISION,MODULE};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,6 +30,17 @@ void MainWindow::clearDisplayIfZero(){
 void MainWindow::clearDisplay(){
     display.clear();
     ui->textBrowserResult->setText(display);
+}
+
+void MainWindow::setResultAtDisplay(){
+    display = QString::number(result);
+    ui->textBrowserResult->setText(display);
+}
+
+void MainWindow::checkOutputConversion(){
+    if(ui->radioButtonDegree->isChecked()){
+        result = toDegree(result);
+    }
 }
 
 void MainWindow::on_pushButtonPointDecimal_clicked(){
@@ -109,184 +123,173 @@ void MainWindow::on_pushButtonClearBuffer_clicked(){
 }
 
 void MainWindow::on_pushButtonAddition_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     operation = ADDITION;
     clearDisplay();
 }
 
 void MainWindow::on_pushButtonSubtraction_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     operation = SUBTRACTION;
     clearDisplay();
 }
 
 void MainWindow::on_pushButtonMultiplication_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     operation = MULTIPLICATION;
     clearDisplay();
 }
 
 void MainWindow::on_pushButtonDivision_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     operation = DIVISION;
     clearDisplay();
 }
 
 void MainWindow::on_pushButtonModule_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     operation = MODULE;
     clearDisplay();
 }
 
-void MainWindow::on_pushButtonExp_clicked(){
-    operand_A = display.toFloat();
-    operation = POW;
-    clearDisplay();
-}
-
 void MainWindow::on_pushButtonGetResult_clicked(){
-    operand_B = display.toFloat();
+    operand_B = display.toDouble();
     clearDisplay();
     switch(operation){
-        case ADDITION:          addition();         break;
-        case SUBTRACTION:       subtraction();      break;
-        case MULTIPLICATION:    multiplication();   break;
-        case DIVISION:          division();         break;
+        case ADDITION:          add();              break;
+        case SUBTRACTION:       sub();              break;
+        case MULTIPLICATION:    mul();              break;
+        case DIVISION:          div();              break;
         case MODULE:            module();           break;
-        case POW:               power();            break;
         default: break;
     }
 }
 
 ///CALL TO ASSEMBLY FUNCTIONS
-void MainWindow::addition(){
-    result = operand_A + operand_B; //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+void MainWindow::add(){
+    result = addition(operand_A,operand_B); //function assembler call
+    setResultAtDisplay();
 }
 
-void MainWindow::subtraction(){
-    result = operand_A - operand_B; //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+void MainWindow::sub(){
+    result = substraction(operand_A,operand_B); //function assembler call
+    setResultAtDisplay();
 }
 
-void MainWindow::multiplication(){
-    result = operand_A * operand_B; //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+void MainWindow::mul(){
+    result = multiplication(operand_A,operand_B); //function assembler call
+    setResultAtDisplay();
 }
 
-void MainWindow::division(){
-    result = operand_A / operand_B; //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+void MainWindow::div(){
+    result = division(operand_A,operand_B); //function assembler call
+    setResultAtDisplay();
 }
 
 void MainWindow::module(){
-    result = (int)operand_A % (int)operand_B; //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+    result = (int)operand_A % (int)operand_B;
+    setResultAtDisplay();
 }
 
-void MainWindow::power(){
-    result = pow(operand_A,operand_B); //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
-}
-
-void MainWindow::on_pushButtonLn_clicked(){
-    operand_A = display.toFloat();
+void MainWindow::on_pushButtonExp_clicked(){
+    operand_A = display.toDouble();
     clearDisplay();
-    if(operand_A > NIL){
-        result = log(operand_A); //function assembler call
-        display = QString::number(result);
-        ui->textBrowserResult->setText(display);
-    }else{
-        ui->textBrowserResult->setText("Undefined");
-    }
+    result = squarePow(operand_A); //function assembler call
+    setResultAtDisplay();
 }
 
 void MainWindow::on_pushButtonSqrt_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     clearDisplay();
     if(operand_A > NIL){
-        result = sqrt(operand_A); //function assembler call
-        display = QString::number(result);
-        ui->textBrowserResult->setText(display);
+        result = squareRoot(operand_A); //function assembler call
+        setResultAtDisplay();
     }else{
         ui->textBrowserResult->setText("Undefined");
     }
 }
 
 void MainWindow::on_pushButtonLog_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     clearDisplay();
     if(operand_A > NIL){
-        result = log10(operand_A); //function assembler call
-        display = QString::number(result);
-        ui->textBrowserResult->setText(display);
+        result = logarithm(operand_A); //function assembler call
+        checkOutputConversion();
+        setResultAtDisplay();
     }else{
         ui->textBrowserResult->setText("Undefined");
     }
 }
 
 void MainWindow::on_pushButtonCos_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     clearDisplay();
-    result = cos(operand_A); //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+    result = cosine(operand_A); //function assembler call
+    checkOutputConversion();
+    setResultAtDisplay();
 }
 
 void MainWindow::on_pushButtonSen_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     clearDisplay();
-    result = sin(operand_A); //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+    result = sine(operand_A); //function assembler call
+    checkOutputConversion();
+    setResultAtDisplay();
 }
 
 void MainWindow::on_pushButtonTan_clicked(){
-    operand_A = display.toFloat();
+    operand_A = display.toDouble();
     clearDisplay();
-    result = tan(operand_A); //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+    result = tangent(operand_A); //function assembler call
+    checkOutputConversion();
+    setResultAtDisplay();
 }
 
-void MainWindow::on_pushButtonCotan_clicked(){
-    operand_A = display.toFloat();
+
+void MainWindow::on_pushButtonAntiLog_clicked(){
+    operand_A = display.toDouble();
     clearDisplay();
-    if(operand_A != NIL){
-        result = 1/tan(operand_A); //function assembler call
-        display = QString::number(result);
-        ui->textBrowserResult->setText(display);
+    result = antilogarithm(operand_A); //function assembler call
+    checkOutputConversion();
+    setResultAtDisplay();
+}
+
+void MainWindow::on_pushButtonArcCos_clicked(){
+    operand_A = display.toDouble();
+    clearDisplay();
+    if(operand_A >= NEGATIVE_ONE && operand_A <= ONE){
+        result = arccos(operand_A); //function assembler call
+        checkOutputConversion();
+        setResultAtDisplay();
     }else{
         ui->textBrowserResult->setText("Undefined");
     }
 }
 
-void MainWindow::on_pushButtonCosh_clicked(){
-    operand_A = display.toFloat();
+void MainWindow::on_pushButtonArcSen_clicked(){
+    operand_A = display.toDouble();
     clearDisplay();
-    result = cosh(operand_A); //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+    if(operand_A >= NEGATIVE_ONE && operand_A <= ONE){
+        result = arcsin(operand_A); //function assembler call
+        checkOutputConversion();
+        setResultAtDisplay();
+    }else{
+        ui->textBrowserResult->setText("Undefined");
+    }
 }
 
-void MainWindow::on_pushButtonSenh_clicked(){
-    operand_A = display.toFloat();
+void MainWindow::on_pushButtonArctan_clicked(){
+    operand_A = display.toDouble();
     clearDisplay();
-    result = sinh(operand_A); //function assembler call
-    display = QString::number(result);
-    ui->textBrowserResult->setText(display);
+    result = arcsin(operand_A); //function assembler call
+    checkOutputConversion();
+    setResultAtDisplay();
 }
 
-void MainWindow::on_pushButtonTanh_clicked(){
-    operand_A = display.toFloat();
-    clearDisplay();
-    result = tanh(operand_A); //function assembler call
-    display = QString::number(result);
+void MainWindow::on_pushButtonChangeSign_clicked(){
+    double aux;
+    aux = display.toDouble();
+    aux = changeSign(aux);
+    display = QString::number(aux);
     ui->textBrowserResult->setText(display);
 }
